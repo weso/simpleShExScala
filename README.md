@@ -1,36 +1,22 @@
-# Utils
+# Simple ShEx Scala
 
-Scala utilities
-
-[![Build Status](https://travis-ci.org/weso/utils.svg?branch=master)](https://travis-ci.org/weso/utils)
-[![codecov](https://codecov.io/gh/weso/utils/branch/master/graph/badge.svg)](https://codecov.io/gh/weso/utils)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/92aef2157e844f48bca96e44b38bb0a7)](https://www.codacy.com/gh/weso/utils?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=weso/utils&amp;utm_campaign=Badge_Grade)
+Example project invoking [shex-s](https://github.com/weso/shex-s) to validate RDF data using ShEx programmatically.
 
 ## Introduction
 
-This project contains some common utilities in Scala.
+This repository contains a simple project to invoke the schema validator using ShEx.
 
 ## Installation and compilation
 
-The project uses [sbt](http://www.scala-sbt.org/) for compilation as well as Java 1.8.
+The project uses [sbt](http://www.scala-sbt.org/).
 
-* `sbt test` compiles and runs the tests
+Once installed, it is possible to run with the following example:
+
+* `sbt run -d examples/user.ttl -s examples/user.shex -m examples/user.sm`
 
 ## Author & contributors
 
 * Author: [Jose Emilio Labra Gayo](http://labra.weso.es)
-
-Contributors:
-
-* [Eric Prud'hommeaux](https://www.w3.org/People/Eric/)
-* [Bogdan Roman](https://github.com/bogdanromanx)
-* [Toni Cebrían](http://www.tonicebrian.com/)
-* [Andrew Berezovskyi](https://github.com/berezovskyi)
-
-## Adopters
-
-* [RDFShape](http://rdfshape.weso.es): An online demo powered by this library.
-* [Wikishape](http://wikishape.weso.es): An online demo powered by this library for Wikidata.
 
 ## Contribution
 
