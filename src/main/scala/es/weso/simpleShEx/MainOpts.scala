@@ -1,6 +1,6 @@
 package es.weso.simpleShEx
 import org.rogach.scallop._
-import es.weso.rdf.jena.RDFAsJenaModel
+import es.weso.rdf.rdf4j.RDFAsRDF4jModel
 import es.weso.shapeMaps.ShapeMap
 
 class MainOpts(arguments: Array[String],
@@ -12,7 +12,7 @@ class MainOpts(arguments: Array[String],
   lazy val shExFormats = List(shExCFormat,shExJFormat).map(_.toUpperCase).distinct
 
   private lazy val defaultDataFormat = "TURTLE"
-  private lazy val dataFormats = RDFAsJenaModel.availableFormats.map(_.toUpperCase).distinct
+  private lazy val dataFormats = RDFAsRDF4jModel.availableFormats.map(_.toUpperCase).distinct
   private lazy val defaultShExFormat = shExCFormat
   private lazy val defaultShapeMapFormat = ShapeMap.defaultFormat
   private lazy val shapeMapFormats = ShapeMap.formats

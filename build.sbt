@@ -38,7 +38,7 @@ lazy val scalaMacrosVersion   = "2.1.1"
 
 lazy val shex             = "es.weso"                    %% "shex"            % shexVersion
 lazy val srdf             = "es.weso"                    %% "srdf"            % srdfVersion
-lazy val srdfJena         = "es.weso"                    %% "srdfjena"        % srdfVersion
+lazy val srdf4j           = "es.weso"                    %% "srdf4j"          % srdfVersion
 lazy val utils            = "es.weso"                    %% "utils"           % utilsVersion
 
 // Dependency modules
@@ -96,7 +96,7 @@ lazy val simpleShExScala = project
     libraryDependencies ++= Seq(
       shex,
       srdf,
-      srdfJena,
+      srdf4j,
       utils,
       logbackClassic,
       scalaLogging,
