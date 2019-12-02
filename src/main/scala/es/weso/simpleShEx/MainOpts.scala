@@ -3,7 +3,7 @@ import org.rogach.scallop._
 import es.weso.rdf.rdf4j.RDFAsRDF4jModel
 import es.weso.shapeMaps.ShapeMap
 
-class MainOpts(arguments: Array[String],
+class MainOpts(arguments: List[String],
                onError: (Throwable, Scallop) => Nothing
               ) extends ScallopConf(arguments) {
 
