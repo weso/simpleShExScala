@@ -5,6 +5,8 @@ import es.weso.shapeMaps.ShapeMap
 import es.weso.shex.Schema
 import es.weso.shex.validator.Validator
 import org.scalatest.{FlatSpec, Matchers}
+import cats.data.EitherT
+import cats.effect._
 
 import scala.io.Source
 
@@ -16,17 +18,17 @@ class ShexValidatorSpec extends FlatSpec with Matchers  {
 
     val validation = for {
       rdf  <- RDFAsRDF4jModel.fromChars(rdfContent.getLines.mkString, "TURTLE", None)
-      shex <- Schema.fromString(shexDefinition.getLines.mkString, "ShexC")
-      shapeMap <- ShapeMap.fromString(mappingsDeclaration.getLines().mkString,
+      shex <- EitherT.fromEither[IO](Schema.fromString(shexDefinition.getLines.mkString, "ShexC"))
+      shapeMap <- EitherT.fromEither[IO](ShapeMap.fromString(mappingsDeclaration.getLines().mkString,
                                       ShapeMap.defaultFormat,
                                       None,
                                       rdf.getPrefixMap(),
-                                      shex.prefixMap)
-      fixedShapeMap <- ShapeMap.fixShapeMap(shapeMap, rdf, rdf.getPrefixMap, shex.prefixMap)
-      result        <- Validator.validate(shex, fixedShapeMap, rdf)
+                                      shex.prefixMap))
+      fixedShapeMap <- EitherT.fromEither[IO](ShapeMap.fixShapeMap(shapeMap, rdf, rdf.getPrefixMap, shex.prefixMap))
+      result        <- EitherT.fromEither[IO](Validator.validate(shex, fixedShapeMap, rdf))
     } yield result
 
-    validation match {
+    validation.value.unsafeRunSync match {
       case Right(result) =>
         result.noSolutions should be (false)
 
