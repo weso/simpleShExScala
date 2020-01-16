@@ -4,38 +4,38 @@ import es.weso.rdf.rdf4j.RDFAsRDF4jModel
 import es.weso.shapeMaps.ShapeMap
 import es.weso.shex.Schema
 import es.weso.shex.validator.Validator
-import org.scalatest.{FlatSpec, Matchers}
-import cats.data.EitherT
-import cats.effect._
+import org.eclipse.rdf4j.rio.{RDFFormat, Rio}
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 
 import scala.io.Source
 
-class ShexValidatorSpec extends FlatSpec with Matchers  {
+class ShexValidatorSpec extends AnyFlatSpec with Matchers {
   "The Shex Validator" should "validate triples, given the mappings and the shex definition" in {
-    val rdfContent            = Source.fromFile("examples/user.ttl")
+    val rdfContent          = Source.fromFile("examples/user.ttl")
     val shexDefinition      = Source.fromFile("examples/user.shex")
     val mappingsDeclaration = Source.fromFile("examples/user.sm")
 
+    val model = Rio.parse(rdfContent.bufferedReader(), "", RDFFormat.TRIG)
+    val rdf   = RDFAsRDF4jModel(model)
+
     val validation = for {
-      rdf  <- RDFAsRDF4jModel.fromChars(rdfContent.getLines.mkString, "TURTLE", None)
-      shex <- EitherT.fromEither[IO](Schema.fromString(shexDefinition.getLines.mkString, "ShexC"))
-      shapeMap <- EitherT.fromEither[IO](ShapeMap.fromString(mappingsDeclaration.getLines().mkString,
+      shex <- Schema.fromString(shexDefinition.getLines.mkString, "ShexC")
+      shapeMap <- ShapeMap.fromString(mappingsDeclaration.getLines().mkString,
                                       ShapeMap.defaultFormat,
                                       None,
                                       rdf.getPrefixMap(),
-                                      shex.prefixMap))
-      fixedShapeMap <- EitherT.fromEither[IO](ShapeMap.fixShapeMap(shapeMap, rdf, rdf.getPrefixMap, shex.prefixMap))
-      result        <- EitherT.fromEither[IO](Validator.validate(shex, fixedShapeMap, rdf))
+                                      shex.prefixMap)
+      fixedShapeMap <- ShapeMap.fixShapeMap(shapeMap, rdf, rdf.getPrefixMap, shex.prefixMap)
+      result        <- Validator.validate(shex, fixedShapeMap, rdf)
     } yield result
 
-    validation.value.unsafeRunSync match {
+    validation match {
       case Right(result) =>
-        result.noSolutions should be (false)
+        result.noSolutions should be(false)
 
       case Left(e) =>
         fail(e)
     }
-
   }
-
 }
