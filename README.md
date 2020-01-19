@@ -17,6 +17,7 @@ Once installed, it is possible to run with the following example:
 ## Author & contributors
 
 * Author: [Jose Emilio Labra Gayo](http://labra.weso.es)
+* Contributor: [Toni Cebrián](http://www.tonicebrian.com/)
 
 ## Contribution
 
